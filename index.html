@@ -67,30 +67,24 @@
 					mesh.rotateX( -Math.PI / 2 );
 					scene.add( mesh );
 				});
-
-				// // if brain mesh is stl file
-				// // STL
-				// const loader1 = new THREE.STLLoader();
-				// loader1.load(window.filePath, function ( geometry ) {
-				// 	geometry.center()
-				// 	const material = new THREE.MeshLambertMaterial({color: 0x55B663});
-				// 	stlMesh = new THREE.Mesh(geometry, material);
-				// 	camera.position.z = geometry.boundingBox.size().z+300
-				// 	//stlMesh.translateY()
-				// 	scene.add(stlMesh);
-				// });
-
-				// var geometry = new THREE.CylinderBufferGeometry( 0, 0.05, 0.2, 32 ).rotateX( Math.PI / 2 );
-
-				// function onSelect() {
-				//
-				// 	var material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-				// 	var mesh = new THREE.Mesh( geometry, material );
-				// 	mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
-				// 	mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
-				// 	scene.add( mesh );
-				//
-				// }
+					function onClick() {
+					  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+					    // Handle iOS 13+ devices.
+					    DeviceMotionEvent.requestPermission()
+					      .then((state) => {
+						if (state === 'granted') {
+						  window.addEventListener('devicemotion', handleOrientation);
+						} else {
+						  console.error('Request to access the orientation was rejected');
+						}
+					      })
+					      .catch(console.error);
+					  } else {
+					    // Handle regular non iOS 13+ devices.
+					    window.addEventListener('devicemotion', handleOrientation);
+					  }
+					}
+				
 
 				controller = renderer.xr.getController( 0 );
 				// controller.addEventListener( 'select', onSelect );
